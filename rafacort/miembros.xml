@@ -1,0 +1,17 @@
+<grupo>
+  <nombre>rafacort</nombre>
+  <url>https://svn.riouxsvn.com/270181rafacort</url>
+  <miembros>
+    <miembro>
+      <nombre>Rafael Villegas Michel</nombre>
+      <codigo>201710012010</codigo>
+      <email>rvillegasm@eafit.edu.co</email>
+    </miembro>
+    <miembro>
+      <nombre>Felipe Cortes Jaramillo</nombre>
+      <codigo></codigo>
+      <email>fcortesj@eafit.edu.co</email>
+    </miembro>
+  </miembros>
+  <mainclass clase="TigerMain"/>
+</grupo>
