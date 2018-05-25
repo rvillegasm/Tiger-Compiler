@@ -2,12 +2,14 @@
 terminal NIL, INTEGER, OF, NEW, POINT, COMMA, SUB, LPAREN, RPAREN, LCOR, RCOR, PRODUCE, IF, THEN, ELSE, 
          WHILE, DO, FOR, TO, BREAK, LET, IN, END, SEMICOLON, TYPE, EQUALS, CLASS, EXTENDS, FUNCTION,
          COLON, PRIMITIVE, VAR, METHOD, ARRAY, ADD, TIMES, DIV, DIFFERENT, LESSTHAN, MORETHAN, LESSEQUAL, MOREEQUAL,
-         AND, OR, IMPORT, LKEY, RKEY, ID, LCOMMENT, RCOMMENT, MESSAGE, STRING;
+         AND, OR, IMPORT, LKEY, RKEY, ID, STRING, TYPEID;
 
-non terminal program, expr, lvalue, exprs, decls, decl, vardec, classfields, classfield, ty, tyfields, typeid,
-             op, comment, idexpr, commaexpr, semiexpr, commatypeid, ifthen, ifthenelse;
+non terminal program, expr, lvalue, exprs, decls, decl, vardec, classfields, classfield, ty, tyfields,
+             op, idexpr, commaexpr, semiexpr, commatypeid, ifthen, ifthenelse;
 
-precedence left MORETHAN, LESSTHAN, EQUALS, LESSEQUAL, MOREEQUAL, AND, OR, DIFFERENT;
+precedence left OR;
+precedence left AND;
+precedence left MORETHAN, LESSTHAN, EQUALS, LESSEQUAL, MOREEQUAL, DIFFERENT;
 precedence left SUB, ADD;
 precedence left TIMES, DIV;
 
@@ -15,12 +17,10 @@ start with program;
 
 program ::= expr
         |   decls
-        |   comment expr
-        |   comment decl
         ;
 //no-terminal extendido
 idexpr ::= 
-       |   COMMA ID expr idexpr
+       |   COMMA ID EQUALS expr idexpr
        ;
 //no-terminal extendido
 commaexpr ::= 
@@ -30,10 +30,10 @@ commaexpr ::=
 expr ::= NIL
      |   INTEGER
      |   STRING
-     |   typeid LCOR expr RCOR OF expr
-     |   typeid LKEY RKEY
-     |   typeid LKEY ID EQUALS expr idexpr RKEY
-     |   NEW typeid
+     |   TYPEID LCOR expr RCOR OF expr
+     |   TYPEID LKEY RKEY
+     |   TYPEID LKEY ID EQUALS expr idexpr RKEY
+     |   NEW TYPEID
      |   lvalue
      |   ID LPAREN RPAREN
      |   ID LPAREN expr commaexpr RPAREN
@@ -49,7 +49,6 @@ expr ::= NIL
      |   FOR ID PRODUCE expr TO expr DO expr
      |   BREAK
      |   LET decls IN exprs END
-     |   comment expr
      ;
 
 ifthen ::= IF expr THEN expr
@@ -76,19 +75,18 @@ decls ::=
       ;
 
 decl ::= TYPE ID EQUALS ty
-     |   CLASS ID LKEY classfields RKEY EQUALS expr
-     |   CLASS ID EXTENDS typeid LKEY classfields RKEY EQUALS expr
+     |   CLASS ID LKEY classfields RKEY
+     |   CLASS ID EXTENDS TYPEID LKEY classfields RKEY
      |   vardec
      |   FUNCTION ID LPAREN tyfields RPAREN EQUALS expr
-     |   FUNCTION ID LPAREN tyfields RPAREN COLON typeid EQUALS expr
+     |   FUNCTION ID LPAREN tyfields RPAREN COLON TYPEID EQUALS expr
      |   PRIMITIVE ID LPAREN tyfields RPAREN
-     |   PRIMITIVE ID LPAREN tyfields RPAREN COLON typeid
-     |   STRING
-     |   comment decl
+     |   PRIMITIVE ID LPAREN tyfields RPAREN COLON TYPEID
+     |   IMPORT STRING
      ;
 
 vardec ::= VAR ID PRODUCE expr
-       |   VAR ID COLON typeid PRODUCE expr
+       |   VAR ID COLON TYPEID PRODUCE expr
        ;
 
 classfields ::= 
@@ -96,27 +94,24 @@ classfields ::=
             ;
 
 classfield ::= vardec
-           |   METHOD LPAREN RPAREN EQUALS expr
-           |   METHOD LPAREN RPAREN COLON typeid EQUALS expr
+           |   METHOD ID LPAREN tyfields RPAREN EQUALS expr
+           |   METHOD ID LPAREN tyfields RPAREN COLON TYPEID EQUALS expr
            ;
 
-ty ::= typeid
+ty ::= TYPEID
    |   LKEY tyfields RKEY
-   |   ARRAY OF typeid
+   |   ARRAY OF TYPEID
    |   CLASS LKEY classfields RKEY
-   |   CLASS EXTENDS typeid LKEY classfields RKEY
+   |   CLASS EXTENDS TYPEID LKEY classfields RKEY
    ;
 //no-terminal extendido
 commatypeid ::=   
-            |   COMMA typeid commatypeid
+            |   COMMA ID COLON TYPEID commatypeid
             ;
 
 tyfields ::= 
-         |   ID COLON typeid commatypeid
+         |   ID COLON TYPEID commatypeid
          ;
-
-typeid ::= ID
-       ;
 
 op ::= ADD
    |   SUB
@@ -131,7 +126,3 @@ op ::= ADD
    |   AND
    |   OR
    ;
-
-comment ::= LCOMMENT MESSAGE comment MESSAGE RCOMMENT
-        |   LCOMMENT MESSAGE RCOMMENT
-        ;
