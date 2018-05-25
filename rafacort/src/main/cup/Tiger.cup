@@ -1,0 +1,137 @@
+
+terminal NIL, INTEGER, OF, NEW, POINT, COMMA, SUB, LPAREN, RPAREN, LCOR, RCOR, PRODUCE, IF, THEN, ELSE, 
+         WHILE, DO, FOR, TO, BREAK, LET, IN, END, SEMICOLON, TYPE, EQUALS, CLASS, EXTENDS, FUNCTION,
+         COLON, PRIMITIVE, VAR, METHOD, ARRAY, ADD, TIMES, DIV, DIFFERENT, LESSTHAN, MORETHAN, LESSEQUAL, MOREEQUAL,
+         AND, OR, IMPORT, LKEY, RKEY, ID, LCOMMENT, RCOMMENT, MESSAGE, STRING;
+
+non terminal program, expr, lvalue, exprs, decls, decl, vardec, classfields, classfield, ty, tyfields, typeid,
+             op, comment, idexpr, commaexpr, semiexpr, commatypeid, ifthen, ifthenelse;
+
+precedence left MORETHAN, LESSTHAN, EQUALS, LESSEQUAL, MOREEQUAL, AND, OR, DIFFERENT;
+precedence left SUB, ADD;
+precedence left TIMES, DIV;
+
+start with program;
+
+program ::= expr
+        |   decls
+        |   comment expr
+        |   comment decl
+        ;
+//no-terminal extendido
+idexpr ::= 
+       |   COMMA ID expr idexpr
+       ;
+//no-terminal extendido
+commaexpr ::= 
+          |   COMMA expr commaexpr
+          ;
+
+expr ::= NIL
+     |   INTEGER
+     |   STRING
+     |   typeid LCOR expr RCOR OF expr
+     |   typeid LKEY RKEY
+     |   typeid LKEY ID EQUALS expr idexpr RKEY
+     |   NEW typeid
+     |   lvalue
+     |   ID LPAREN RPAREN
+     |   ID LPAREN expr commaexpr RPAREN
+     |   lvalue POINT ID LPAREN RPAREN
+     |   lvalue POINT ID LPAREN expr commaexpr RPAREN
+     |   SUB expr
+     |   expr op expr
+     |   LPAREN exprs RPAREN
+     |   lvalue PRODUCE expr
+     |   ifthen 
+     |   ifthenelse
+     |   WHILE expr DO expr
+     |   FOR ID PRODUCE expr TO expr DO expr
+     |   BREAK
+     |   LET decls IN exprs END
+     |   comment expr
+     ;
+
+ifthen ::= IF expr THEN expr
+       ;
+
+ifthenelse ::= IF expr THEN expr ELSE expr
+           ;
+
+lvalue ::= ID
+       |   lvalue POINT ID
+       |   lvalue LCOR exprs RCOR
+       ;
+
+semiexpr ::= 
+         |   SEMICOLON expr semiexpr
+         ;
+
+exprs ::= 
+      |   expr semiexpr
+      ;
+
+decls ::= 
+      |   decl decls
+      ;
+
+decl ::= TYPE ID EQUALS ty
+     |   CLASS ID LKEY classfields RKEY EQUALS expr
+     |   CLASS ID EXTENDS typeid LKEY classfields RKEY EQUALS expr
+     |   vardec
+     |   FUNCTION ID LPAREN tyfields RPAREN EQUALS expr
+     |   FUNCTION ID LPAREN tyfields RPAREN COLON typeid EQUALS expr
+     |   PRIMITIVE ID LPAREN tyfields RPAREN
+     |   PRIMITIVE ID LPAREN tyfields RPAREN COLON typeid
+     |   STRING
+     |   comment decl
+     ;
+
+vardec ::= VAR ID PRODUCE expr
+       |   VAR ID COLON typeid PRODUCE expr
+       ;
+
+classfields ::= 
+            |   classfield classfields
+            ;
+
+classfield ::= vardec
+           |   METHOD LPAREN RPAREN EQUALS expr
+           |   METHOD LPAREN RPAREN COLON typeid EQUALS expr
+           ;
+
+ty ::= typeid
+   |   LKEY tyfields RKEY
+   |   ARRAY OF typeid
+   |   CLASS LKEY classfields RKEY
+   |   CLASS EXTENDS typeid LKEY classfields RKEY
+   ;
+//no-terminal extendido
+commatypeid ::=   
+            |   COMMA typeid commatypeid
+            ;
+
+tyfields ::= 
+         |   ID COLON typeid commatypeid
+         ;
+
+typeid ::= ID
+       ;
+
+op ::= ADD
+   |   SUB
+   |   TIMES
+   |   DIV
+   |   EQUALS
+   |   DIFFERENT
+   |   LESSTHAN
+   |   MORETHAN
+   |   LESSEQUAL
+   |   MOREEQUAL
+   |   AND
+   |   OR
+   ;
+
+comment ::= LCOMMENT MESSAGE comment MESSAGE RCOMMENT
+        |   LCOMMENT MESSAGE RCOMMENT
+        ;
