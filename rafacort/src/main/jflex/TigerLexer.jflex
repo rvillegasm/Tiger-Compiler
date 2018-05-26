@@ -14,6 +14,7 @@ eol = \n\r|\r\n|\r|\n
 string = [""]
 comment = "/*" [^*] ~"*/"
 identifier = [:jletter:][:jletterdigit:]
+typeid = [:jletter:][:jletterdigit:]
 
 %%
 /* keyword */
