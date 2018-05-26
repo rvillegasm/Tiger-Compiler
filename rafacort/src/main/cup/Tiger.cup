@@ -5,7 +5,7 @@ terminal NIL, INTEGER, OF, NEW, POINT, COMMA, SUB, LPAREN, RPAREN, LCOR, RCOR, P
          AND, OR, IMPORT, LKEY, RKEY, ID, STRING, TYPEID;
 
 non terminal program, expr, lvalue, exprs, decls, decl, vardec, classfields, classfield, ty, tyfields,
-             op, idexpr, commaexpr, semiexpr, commatypeid, ifthen, ifthenelse;
+             op, idexpr, commaexpr, semiexpr, commatypeid, ifthen, ifthenelse, extraExpr,extraifthenelse;
 
 precedence left OR;
 precedence left AND;
@@ -43,19 +43,25 @@ expr ::= NIL
      |   expr op expr
      |   LPAREN exprs RPAREN
      |   lvalue PRODUCE expr
-     |   ifthen 
+     |   ifthen
      |   ifthenelse
      |   WHILE expr DO expr
      |   FOR ID PRODUCE expr TO expr DO expr
      |   BREAK
      |   LET decls IN exprs END
      ;
-
+// solucion else colgante
 ifthen ::= IF expr THEN expr
        ;
 
-ifthenelse ::= IF expr THEN expr ELSE expr
+ifthenelse ::= IF expr THEN extraExpr ELSE expr
            ;
+
+extraExpr ::= extraifthenelse
+          ;
+
+extraifthenelse ::= IF expr THEN extraExpr ELSE extraExpr
+                ;
 
 lvalue ::= ID
        |   lvalue POINT ID
