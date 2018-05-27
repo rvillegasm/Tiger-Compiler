@@ -19,7 +19,7 @@ whitespace = [ \t]
 eol = \n\r|\r\n|\r|\n
 comment = "/*" [^*] ~"*/" | "/*" "*"+ "*/"
 identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
-typeid = "int"|"string"|"object"
+
 
 %state STRING
 
@@ -92,10 +92,7 @@ typeid = "int"|"string"|"object"
 
   /* Identifiers */
 
-  {identifier} { return new Symbol(TigerSymbols.ID)       ;}
-
-  /* Type of Identifier */
-  {typeid}     { return new Symbol(TigerSymbols.TYPEID)   ;}
+  {identifier} { return new Symbol(TigerSymbols.ID)  ;}
 
   /* Integer */
   {number}     { return new Symbol(TigerSymbols.INTEGER, new Integer(yytext()))  ;}

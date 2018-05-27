@@ -2,16 +2,17 @@
 terminal NIL, INTEGER, OF, NEW, POINT, COMMA, SUB, LPAREN, RPAREN, LCOR, RCOR, PRODUCE, IF, THEN, ELSE, 
          WHILE, DO, FOR, TO, BREAK, LET, IN, END, SEMICOLON, TYPE, EQUALS, CLASS, EXTENDS, FUNCTION,
          COLON, PRIMITIVE, VAR, METHOD, ARRAY, ADD, TIMES, DIV, DIFFERENT, LESSTHAN, MORETHAN, LESSEQUAL, MOREEQUAL,
-         AND, OR, IMPORT, LKEY, RKEY, ID, STRING, TYPEID;
+         AND, OR, IMPORT, LKEY, RKEY, ID, STRING;
 
 non terminal program, expr, lvalue, exprs, decls, decl, vardec, classfields, classfield, ty, tyfields,
-             op, idexpr, commaexpr, semiexpr, commatypeid, ifthen, ifthenelse, extraExpr, extraifthenelse;
+             op, idexpr, commaexpr, semiexpr, commatypeid, ifthen, ifthenelse, extraExpr, extraifthenelse, typeid;
 
 precedence left OR;
 precedence left AND;
 precedence left MORETHAN, LESSTHAN, EQUALS, LESSEQUAL, MOREEQUAL, DIFFERENT;
 precedence left SUB, ADD;
 precedence left TIMES, DIV;
+precedence left LKEY,LCOR,LPAREN;
 
 start with program;
 
@@ -30,10 +31,10 @@ commaexpr ::=
 expr ::= NIL
      |   INTEGER
      |   STRING
-     |   TYPEID LCOR expr RCOR OF expr
-     |   TYPEID LKEY RKEY
-     |   TYPEID LKEY ID EQUALS expr idexpr RKEY
-     |   NEW TYPEID
+     |   typeid LCOR expr RCOR OF expr
+     |   typeid LKEY RKEY
+     |   typeid LKEY ID EQUALS expr idexpr RKEY
+     |   NEW typeid
      |   lvalue
      |   ID LPAREN RPAREN
      |   ID LPAREN expr commaexpr RPAREN
@@ -63,7 +64,7 @@ extraExpr ::= extraifthenelse
 extraifthenelse ::= IF expr THEN extraExpr ELSE extraExpr
                 ;
 
-lvalue ::= ID
+lvalue ::= typeid
        |   lvalue POINT ID
        |   lvalue LCOR exprs RCOR
        ;
@@ -82,17 +83,17 @@ decls ::=
 
 decl ::= TYPE ID EQUALS ty
      |   CLASS ID LKEY classfields RKEY
-     |   CLASS ID EXTENDS TYPEID LKEY classfields RKEY
+     |   CLASS ID EXTENDS typeid LKEY classfields RKEY
      |   vardec
      |   FUNCTION ID LPAREN tyfields RPAREN EQUALS expr
-     |   FUNCTION ID LPAREN tyfields RPAREN COLON TYPEID EQUALS expr
+     |   FUNCTION ID LPAREN tyfields RPAREN COLON typeid EQUALS expr
      |   PRIMITIVE ID LPAREN tyfields RPAREN
-     |   PRIMITIVE ID LPAREN tyfields RPAREN COLON TYPEID
+     |   PRIMITIVE ID LPAREN tyfields RPAREN COLON typeid
      |   IMPORT STRING
      ;
 
 vardec ::= VAR ID PRODUCE expr
-       |   VAR ID COLON TYPEID PRODUCE expr
+       |   VAR ID COLON typeid PRODUCE expr
        ;
 
 classfields ::= 
@@ -101,22 +102,26 @@ classfields ::=
 
 classfield ::= vardec
            |   METHOD ID LPAREN tyfields RPAREN EQUALS expr
-           |   METHOD ID LPAREN tyfields RPAREN COLON TYPEID EQUALS expr
+           |   METHOD ID LPAREN tyfields RPAREN COLON typeid EQUALS expr
            ;
 
-ty ::= TYPEID
+ty ::= typeid
    |   LKEY tyfields RKEY
-   |   ARRAY OF TYPEID
+   |   ARRAY OF typeid
    |   CLASS LKEY classfields RKEY
-   |   CLASS EXTENDS TYPEID LKEY classfields RKEY
+   |   CLASS EXTENDS typeid LKEY classfields RKEY
    ;
+
+typeid ::= ID
+       ;
+
 //no-terminal extendido
 commatypeid ::=   
-            |   COMMA ID COLON TYPEID commatypeid
+            |   COMMA ID COLON typeid commatypeid
             ;
 
 tyfields ::= 
-         |   ID COLON TYPEID commatypeid
+         |   ID COLON typeid commatypeid
          ;
 
 op ::= ADD
