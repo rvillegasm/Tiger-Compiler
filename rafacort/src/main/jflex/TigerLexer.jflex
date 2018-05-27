@@ -7,13 +7,21 @@ import java_cup.runtime.Symbol;
 %class TigerLexer
 %line
 %column
+/* scanner constructor */
+%{
+
+  StringBuffer string = new StringBuffer();
+
+%}
 
 number = 0 | [1-9][0-9]*
 whitespace = [ \t]
 eol = \n\r|\r\n|\r|\n
 comment = "/*" [^*] ~"*/" | "/*" "*"+ "*/"
-identifier = [:jletter:][:jletterdigit:]*
-typeid = [:jletter:][:jletterdigit:]*
+identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
+typeid = {identifier}
+
+%state STRING
 
 %%
 
@@ -91,6 +99,33 @@ typeid = [:jletter:][:jletterdigit:]*
 
   /* Integer */
   {number}     { return new Symbol(TigerSymbols.INTEGER, new Integer(yytext()))  ;}
+
+  /* Start of a string */
+
+  \"           { string.setLength(0); yybegin(STRING)     ;}
+}
+
+<STRING> {
+  \"           { yybegin(YYINITIAL); return new Symbol(TigerSymbols.STRING, string.toString()) ;}
+
+  [^\n\r\"\\]+ { string.append( yytext() )                 ;}
+
+  \\a          { string.append('\a')                       ;}
+  \\b          { string.append('\b')                       ;}
+  \\f          { string.append('\f')                       ;}
+  \\n          { string.append('\n')                       ;}
+  \\r          { string.append('\r')                       ;}
+  \\t          { string.append('\t')                       ;}
+  \\v          { string.append('\v')                       ;}
+  \\           { string.append('\\')                       ;}
+  \\\"         { string.append('\"')                       ;}
+
+  \\[0-7][0-7][0-7]          { string.append( (char) Integer.parseInt(yytext().substring(1), 8) )      ;}
+
+  \\x[0-9a-fA-F][0-9a-fA-F]  { string.append( (char) Integer.parseInt(yytext().substring(2), 16) )     ;}
+
+  \\.          { throw  new Error("Illegal escape sequence <"+ yytext() +"> at line: " + (yyline +1) + " column: " + yycolumn) ;}
+  
 }
 
 <<EOF>>        { return new Symbol(TigerSymbols.EOF)      ;}
