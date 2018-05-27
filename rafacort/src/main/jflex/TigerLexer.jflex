@@ -19,7 +19,7 @@ whitespace = [ \t]
 eol = \n\r|\r\n|\r|\n
 comment = "/*" [^*] ~"*/" | "/*" "*"+ "*/"
 identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
-typeid = {identifier}
+typeid = "int"|"string"|"object"
 
 %state STRING
 
