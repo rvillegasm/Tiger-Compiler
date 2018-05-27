@@ -18,8 +18,8 @@ number = 0 | [1-9][0-9]*
 whitespace = [ \t]
 eol = \n\r|\r\n|\r|\n
 comment = "/*" [^*] ~"*/" | "/*" "*"+ "*/"
-typeid = [:jletter:][:jletterdigit:]*
-identifier = {typeid}["_"]* | "_main"
+identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
+typeid = "int"|"string"|"object"
 
 %state STRING
 
