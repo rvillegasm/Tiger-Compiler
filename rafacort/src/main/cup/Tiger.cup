@@ -5,10 +5,8 @@ terminal NIL, INTEGER, OF, NEW, POINT, COMMA, SUB, LPAREN, RPAREN, LCOR, RCOR, P
          AND, OR, IMPORT, LKEY, RKEY, ID, STRING, TYPEID;
 
 non terminal program, expr, lvalue, exprs, decls, decl, vardec, classfields, classfield, ty, tyfields,
-             op, idexpr, commaexpr, semiexpr, commatypeid, ifthen, ifthenelse, extraExpr,extraifthenelse;
+             op, idexpr, commaexpr, semiexpr, commatypeid, ifthen, ifthenelse, extraExpr, extraifthenelse;
 
-precedence left RCOR, RKEY, RPAREN;
-precedence right LCOR, LKEY, LPAREN;
 precedence left OR;
 precedence left AND;
 precedence left MORETHAN, LESSTHAN, EQUALS, LESSEQUAL, MOREEQUAL, DIFFERENT;
