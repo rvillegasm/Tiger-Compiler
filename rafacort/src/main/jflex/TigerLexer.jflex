@@ -18,8 +18,8 @@ number = 0 | [1-9][0-9]*
 whitespace = [ \t]
 eol = \n\r|\r\n|\r|\n
 comment = "/*" [^*] ~"*/" | "/*" "*"+ "*/"
-identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
-typeid = "int"|"string"|"object"
+typeid = [:jletter:][:jletterdigit:]*
+identifier = {typeid}["_"]* | "_main"
 
 %state STRING
 
@@ -117,7 +117,7 @@ typeid = "int"|"string"|"object"
   \\r          { string.append('\r')                       ;}
   \\t          { string.append('\t')                       ;}
   \\v          { string.append('\v')                       ;}
-  \\           { string.append('\\')                       ;}
+  \\\          { string.append('\\')                       ;}
   \\\"         { string.append('\"')                       ;}
 
   \\[0-7][0-7][0-7]          { string.append( (char) Integer.parseInt(yytext().substring(1), 8) )      ;}
