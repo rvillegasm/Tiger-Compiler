@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.FileNotFoundException;
 
 /**
- * TigerMain
+ * TigerMain by Rafael VIllegas and Felipe Cortes
  */
 public class TigerMain {
 
