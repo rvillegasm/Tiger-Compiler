@@ -5,6 +5,10 @@ import java.io.Reader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 
+import java.util.Set;
+import java.util.Arrays;
+import java.util.HashSet;
+
 
 /**
  * TigerMain by Rafael VIllegas and Felipe Cortes
@@ -16,6 +20,18 @@ public class TigerMain {
   }
 
   public static void main(String[] args) {
+
+    Set<String> keyWords = new HashSet<>(Arrays.asList(
+                                                        "ARRAY", "IF", "THEN", "ELSE", "WHILE", "OR", "TO", "DO", "LET", "IN", 
+                                                        "END", "OF", "BREAK", "NIL", "FUNCTION", "VAR", "TYPE", "IMPORT",
+                                                        "PRIMITIVE", "CLASS", "EXTENDS", "METHOD", "NEW"
+                                                      ));
+    
+    Set<String> signs = new HashSet<>(Arrays.asList(
+                                                      "POINT", "COLON", "SEMICOLON", "LPAREN", "RPAREN", "LCOR", "RCOR", "LKEY", "RKEY", "IN", 
+                                                      "COMMA", "ADD", "SUB", "TIMES", "DIV", "EQUALS", "DIFFERENT", "LESSTHAN",
+                                                      "LESSEQUAL", "MORETHAN", "MOREEQUAL", "AND", "OR", "PRODUCE"
+                                                    ));
 
     int argsNum = args.length;
 
@@ -37,7 +53,7 @@ public class TigerMain {
                 System.out.println(
                                     "[" + scan.getLine() + 
                                     ", " + scan.getColumn() + 
-                                    ", " + TigerSymbols.terminalNames[token.sym] + 
+                                    ", " + getType(TigerSymbols.terminalNames[token.sym], keyWords, signs) + 
                                     ", " + scan.getText() + "]"  
                                   );
                 token = scan.next_token();
@@ -73,7 +89,7 @@ public class TigerMain {
                 System.out.println(
                                     "[" + scan.getLine() + 
                                     ", " + scan.getColumn() + 
-                                    ", " + TigerSymbols.terminalNames[token.sym] + 
+                                    ", " + getType(TigerSymbols.terminalNames[token.sym], keyWords, signs) + 
                                     ", " + scan.getText() + "]"
                                   );
                 token = scan.next_token();
@@ -111,7 +127,7 @@ public class TigerMain {
                 System.out.println(
                                     "[" + scan.getLine() + 
                                     ", " + scan.getColumn() + 
-                                    ", " + TigerSymbols.terminalNames[token.sym] + 
+                                    ", " + getType(TigerSymbols.terminalNames[token.sym], keyWords, signs) + 
                                     ", " + scan.getText() + "]"
                                   );
                 token = scan.next_token();
@@ -182,6 +198,24 @@ public class TigerMain {
       usage();
     }
 
+  }
+
+  private static String getType(String token, Set<String> keywords, Set<String> signs) {
+    if(token.equals("INTEGER")) {
+      return "number";
+    }
+    else if(token.equals("STRING")) {
+      return "string";
+    }
+    else if(keywords.contains(token)) {
+      return "keyword";
+    }
+    else if(signs.contains(token)) {
+      return "symbol";
+    }
+    else {
+      return "error";
+    }
   }
   
 }
