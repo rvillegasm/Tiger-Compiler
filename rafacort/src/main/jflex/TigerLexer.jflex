@@ -11,6 +11,14 @@ import java_cup.runtime.Symbol;
 %{
 
   StringBuffer string = new StringBuffer();
+  /* gets the current Token line */
+  public int getLine() {
+    return yyline + 1;
+  }
+  /* gets the current Token column */
+  public int getColumn() {
+    return yycolumn + 1;
+  }
 
 %}
 
