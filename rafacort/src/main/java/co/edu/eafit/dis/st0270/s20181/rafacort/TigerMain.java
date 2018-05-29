@@ -24,7 +24,7 @@ public class TigerMain {
     Set<String> keyWords = new HashSet<>(Arrays.asList(
                                                         "ARRAY", "IF", "THEN", "ELSE", "WHILE", "OR", "TO", "DO", "LET", "IN", 
                                                         "END", "OF", "BREAK", "NIL", "FUNCTION", "VAR", "TYPE", "IMPORT",
-                                                        "PRIMITIVE", "CLASS", "EXTENDS", "METHOD", "NEW"
+                                                        "PRIMITIVE", "CLASS", "EXTENDS", "METHOD", "NEW", "FOR"
                                                       ));
     
     Set<String> signs = new HashSet<>(Arrays.asList(
@@ -51,10 +51,10 @@ public class TigerMain {
               // print the token stream
               while(!TigerSymbols.terminalNames[token.sym].equals("EOF")) {
                 System.out.println(
-                                    "[" + scan.getLine() + 
-                                    ", " + scan.getColumn() + 
+                                    "[" + printTokenLine(scan.getLine(), TigerSymbols.terminalNames[token.sym], scan) + 
+                                    ", " + printTokenColumn(scan.getColumn(), TigerSymbols.terminalNames[token.sym], scan)  + 
                                     ", " + getType(TigerSymbols.terminalNames[token.sym], keyWords, signs) + 
-                                    ", " + scan.getText() + "]"  
+                                    ", " + printToken(scan, TigerSymbols.terminalNames[token.sym]) + "]"  
                                   );
                 token = scan.next_token();
               }
@@ -87,10 +87,10 @@ public class TigerMain {
               // print the token stream
               while(!TigerSymbols.terminalNames[token.sym].equals("EOF")) {
                 System.out.println(
-                                    "[" + scan.getLine() + 
-                                    ", " + scan.getColumn() + 
+                                    "[" + printTokenLine(scan.getLine(), TigerSymbols.terminalNames[token.sym], scan) + 
+                                    ", " + printTokenColumn(scan.getColumn(), TigerSymbols.terminalNames[token.sym], scan)  + 
                                     ", " + getType(TigerSymbols.terminalNames[token.sym], keyWords, signs) + 
-                                    ", " + scan.getText() + "]"
+                                    ", " + printToken(scan, TigerSymbols.terminalNames[token.sym]) + "]"
                                   );
                 token = scan.next_token();
               }
@@ -125,10 +125,10 @@ public class TigerMain {
               // print the token stream
               while(!TigerSymbols.terminalNames[token.sym].equals("EOF")) {
                 System.out.println(
-                                    "[" + scan.getLine() + 
-                                    ", " + scan.getColumn() + 
+                                    "[" + printTokenLine(scan.getLine(), TigerSymbols.terminalNames[token.sym], scan) + 
+                                    ", " + printTokenColumn(scan.getColumn(), TigerSymbols.terminalNames[token.sym], scan)  + 
                                     ", " + getType(TigerSymbols.terminalNames[token.sym], keyWords, signs) + 
-                                    ", " + scan.getText() + "]"
+                                    ", " + printToken(scan, TigerSymbols.terminalNames[token.sym]) + "]"
                                   );
                 token = scan.next_token();
               }
@@ -213,8 +213,33 @@ public class TigerMain {
     else if(signs.contains(token)) {
       return "symbol";
     }
+    else if(token.equals("ID")) {
+      return "id";
+    }
     else {
       return "error";
+    }
+  }
+
+  private static String printToken(TigerLexer scaner, String token) {
+    if(token.equals("STRING")) {
+      return "\"" + scaner.string.toString() + "\"";
+    }
+    else {
+      return "\"" + scaner.getText() + "\"";
+    }
+  }
+
+  private static int printTokenLine(int line, String token, TigerLexer scanner) {
+    return line;
+  }
+
+  private static int printTokenColumn(int col, String token, TigerLexer scanner) {
+    if(token.equals("STRING")) {
+      return col - scanner.string.toString().length() - 1;
+    }
+    else {
+      return col;
     }
   }
   
