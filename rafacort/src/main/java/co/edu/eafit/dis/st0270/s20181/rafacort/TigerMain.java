@@ -5,6 +5,7 @@ import java.io.Reader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 
+
 /**
  * TigerMain by Rafael VIllegas and Felipe Cortes
  */
@@ -34,10 +35,10 @@ public class TigerMain {
               // print the token stream
               while(!TigerSymbols.terminalNames[token.sym].equals("EOF")) {
                 System.out.println(
-                                    " Line: " + scan.getLine() + 
-                                    " Column: " + scan.getColumn() + 
-                                    " Type: " + TigerSymbols.terminalNames[token.sym]  
-                                    
+                                    "[" + scan.getLine() + 
+                                    ", " + scan.getColumn() + 
+                                    ", " + TigerSymbols.terminalNames[token.sym] + 
+                                    ", " + scan.getText() + "]"  
                                   );
                 token = scan.next_token();
               }
@@ -70,9 +71,10 @@ public class TigerMain {
               // print the token stream
               while(!TigerSymbols.terminalNames[token.sym].equals("EOF")) {
                 System.out.println(
-                                    " Line: " + scan.getLine() + 
-                                    " Column: " + scan.getColumn() + 
-                                    " Type: " + TigerSymbols.terminalNames[token.sym]
+                                    "[" + scan.getLine() + 
+                                    ", " + scan.getColumn() + 
+                                    ", " + TigerSymbols.terminalNames[token.sym] + 
+                                    ", " + scan.getText() + "]"
                                   );
                 token = scan.next_token();
               }
@@ -107,9 +109,10 @@ public class TigerMain {
               // print the token stream
               while(!TigerSymbols.terminalNames[token.sym].equals("EOF")) {
                 System.out.println(
-                                    " Line: " + scan.getLine() + 
-                                    " Column: " + scan.getColumn() + 
-                                    " Type: " + TigerSymbols.terminalNames[token.sym]
+                                    "[" + scan.getLine() + 
+                                    ", " + scan.getColumn() + 
+                                    ", " + TigerSymbols.terminalNames[token.sym] + 
+                                    ", " + scan.getText() + "]"
                                   );
                 token = scan.next_token();
               }

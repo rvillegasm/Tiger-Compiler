@@ -19,6 +19,9 @@ import java_cup.runtime.Symbol;
   public int getColumn() {
     return yycolumn + 1;
   }
+  public String getText() {
+    return yytext();
+  }
 
 %}
 
@@ -115,13 +118,13 @@ identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
 
   [^\n\r\"\\]+ { string.append( yytext() ); }
 
-  \\a          { string.append('\7'); }
+  \\a          { string.append( (char) 7); }
   \\b          { string.append('\b');  }
   \\f          { string.append('\f');  }
   \\n          { string.append('\n');  }
   \\r          { string.append('\r');  }
   \\t          { string.append('\t');  }
-  \\v          { string.append('\11'); }
+  \\v          { string.append( (char) 11); }
   \\\          { string.append('\\');  }
   \\\"         { string.append('\"');  }
 
