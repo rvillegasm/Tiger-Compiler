@@ -20,7 +20,7 @@ public class TigerMain {
   }
 
   public static void main(String[] args) {
-
+    
     Set<String> keyWords = new HashSet<>(Arrays.asList(
                                                         "ARRAY", "IF", "THEN", "ELSE", "WHILE", "OR", "TO", "DO", "LET", "IN", 
                                                         "END", "OF", "BREAK", "NIL", "FUNCTION", "VAR", "TYPE", "IMPORT",
@@ -58,6 +58,7 @@ public class TigerMain {
                                   );
                 token = scan.next_token();
               }
+
               System.out.println("File: " + args[i] + " Parser: True");
             }
             catch(FileNotFoundException fnfe) {
