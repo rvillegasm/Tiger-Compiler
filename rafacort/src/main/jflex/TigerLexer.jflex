@@ -4,7 +4,6 @@ import java_cup.runtime.Symbol;
 
 %%
 %cup
-%unicode
 %class TigerLexer
 %line
 %column
