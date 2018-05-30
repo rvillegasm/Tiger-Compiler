@@ -5,89 +5,96 @@ terminal NIL, INTEGER, OF, NEW, POINT, COMMA, SUB, LPAREN, RPAREN, LCOR, RCOR, P
          AND, OR, IMPORT, LKEY, RKEY, ID, STRING;
 
 non terminal program, expr, lvalue, exprs, decls, decl, vardec, classfields, classfield, ty, tyfields,
-             op, idexpr, commaexpr, semiexpr, commatypeid, ifthen, ifthenelse, extraExpr, extraifthenelse, typeid;
+             op, idexpr, commaexpr, semiexpr, commatypeid, ifthenelse, typeid;
 
 precedence left OR;
 precedence left AND;
 precedence left MORETHAN, LESSTHAN, EQUALS, LESSEQUAL, MOREEQUAL, DIFFERENT;
 precedence left SUB, ADD;
 precedence left TIMES, DIV;
-precedence left LKEY,LCOR,LPAREN;
+precedence left LKEY,LCOR,LPAREN,ELSE;
 
 start with program;
 
 program ::= expr
         |   decls
+	|   {: RESULT = null; :}  //FALTA POR CORREGIR
         ;
+	
 //no-terminal extendido
-idexpr ::= 
-       |   COMMA ID EQUALS expr idexpr
+idexpr ::= COMMA ID EQUALS expr idexpr
+       |   COMMA ID EQUALS expr
        ;
+       
 //no-terminal extendido
-commaexpr ::= 
-          |   COMMA expr commaexpr
+commaexpr ::=  COMMA expr commaexpr
+	  |    COMMA expr
           ;
 
 expr ::= NIL
      |   INTEGER
      |   STRING
      |   typeid LCOR expr RCOR OF expr
-     |   typeid LKEY RKEY
+     |   typeid LKEY RKEY 
+     |   typeid LKEY ID EQUALS expr RKEY
      |   typeid LKEY ID EQUALS expr idexpr RKEY
      |   NEW typeid
      |   lvalue
      |   ID LPAREN RPAREN
+     |   ID LPAREN expr RPAREN
      |   ID LPAREN expr commaexpr RPAREN
      |   lvalue POINT ID LPAREN RPAREN
+     |   lvalue POINT ID LPAREN expr RPAREN
      |   lvalue POINT ID LPAREN expr commaexpr RPAREN
      |   SUB expr
      |   expr op expr
+     |   LPAREN RPAREN
      |   LPAREN exprs RPAREN
      |   lvalue PRODUCE expr
-     |   ifthen
-     |   ifthenelse
+     |   IF expr THEN expr
+     |   IF expr THEN expr ifthenelse
      |   WHILE expr DO expr
      |   FOR ID PRODUCE expr TO expr DO expr
      |   BREAK
+     |   LET decls IN END
      |   LET decls IN exprs END
      ;
+     
 // solucion else colgante
-ifthen ::= IF expr THEN expr
-       ;
 
-ifthenelse ::= IF expr THEN extraExpr ELSE expr
+ifthenelse ::= ELSE expr
            ;
-
-extraExpr ::= extraifthenelse
-          ;
-
-extraifthenelse ::= IF expr THEN extraExpr ELSE extraExpr
-                ;
 
 lvalue ::= typeid
        |   lvalue POINT ID
-       |   lvalue LCOR exprs RCOR
+       |   lvalue LCOR expr RCOR
        ;
 
-semiexpr ::= 
+semiexpr ::= SEMICOLON expr
          |   SEMICOLON expr semiexpr
          ;
 
-exprs ::= 
+exprs ::= expr
       |   expr semiexpr
       ;
 
-decls ::= 
+decls ::= decl
       |   decl decls
       ;
 
 decl ::= TYPE ID EQUALS ty
+     |   CLASS ID LKEY RKEY
      |   CLASS ID LKEY classfields RKEY
+     |   CLASS ID EXTENDS typeid LKEY RKEY
      |   CLASS ID EXTENDS typeid LKEY classfields RKEY
      |   vardec
+     |   FUNCTION ID LPAREN RPAREN EQUALS expr
      |   FUNCTION ID LPAREN tyfields RPAREN EQUALS expr
+     |   FUNCTION ID LPAREN RPAREN COLON typeid EQUALS expr
      |   FUNCTION ID LPAREN tyfields RPAREN COLON typeid EQUALS expr
+     |   PRIMITIVE ID LPAREN RPAREN
      |   PRIMITIVE ID LPAREN tyfields RPAREN
+     |   PRIMITIVE ID LPAREN RPAREN COLON typeid
      |   PRIMITIVE ID LPAREN tyfields RPAREN COLON typeid
      |   IMPORT STRING
      ;
@@ -96,19 +103,24 @@ vardec ::= VAR ID PRODUCE expr
        |   VAR ID COLON typeid PRODUCE expr
        ;
 
-classfields ::= 
+classfields ::= classfield
             |   classfield classfields
             ;
 
 classfield ::= vardec
+	   |   METHOD ID LPAREN RPAREN EQUALS expr
            |   METHOD ID LPAREN tyfields RPAREN EQUALS expr
+	   |   METHOD ID LPAREN RPAREN COLON typeid EQUALS expr
            |   METHOD ID LPAREN tyfields RPAREN COLON typeid EQUALS expr
            ;
 
 ty ::= typeid
+   |   LKEY RKEY
    |   LKEY tyfields RKEY
    |   ARRAY OF typeid
+   |   CLASS LKEY RKEY
    |   CLASS LKEY classfields RKEY
+   |   CLASS EXTENDS typeid LKEY RKEY
    |   CLASS EXTENDS typeid LKEY classfields RKEY
    ;
 
@@ -116,11 +128,11 @@ typeid ::= ID
        ;
 
 //no-terminal extendido
-commatypeid ::=   
+commatypeid ::= COMMA ID COLON typeid   
             |   COMMA ID COLON typeid commatypeid
             ;
 
-tyfields ::= 
+tyfields ::= ID COLON typeid
          |   ID COLON typeid commatypeid
          ;
 
