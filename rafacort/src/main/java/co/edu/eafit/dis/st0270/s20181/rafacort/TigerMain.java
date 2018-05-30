@@ -47,7 +47,7 @@ public class TigerMain {
               TigerLexer scan = new TigerLexer(new FileReader(args[i]));
               TigerLexer scanP = new TigerLexer(new FileReader(args[i]));
               TigerParser parser = new TigerParser(scanP);
-              parser.parse();
+          
               // print the token stream
               Symbol token = scan.next_token();
               // print the token stream
@@ -60,6 +60,8 @@ public class TigerMain {
                                   );
                 token = scan.next_token();
               }
+
+              parser.parse();
 
               System.out.println("File: " + args[i] + " Parser: True");
             }
@@ -87,7 +89,6 @@ public class TigerMain {
             TigerLexer scanP = new TigerLexer(new FileReader(args[i]));
             TigerParser parser = new TigerParser(scanP);
 
-            parser.parse();
             // print the token stream
             Symbol token = scan.next_token();
               // print the token stream
@@ -100,6 +101,8 @@ public class TigerMain {
                                   );
                 token = scan.next_token();
               }
+
+              parser.parse();
           }
           catch(FileNotFoundException fnfe) {
             usage();
@@ -129,7 +132,7 @@ public class TigerMain {
               TigerLexer scanP = new TigerLexer(new FileReader(args[i]));
               TigerParser parser = new TigerParser(scanP);
               Symbol token = scan.next_token();
-              parser.parse();
+              
               // print the token stream
               while(!TigerSymbols.terminalNames[token.sym].equals("EOF")) {
                 System.out.println(
@@ -140,6 +143,9 @@ public class TigerMain {
                                   );
                 token = scan.next_token();
               }
+
+              parser.parse();
+              
               System.out.println("File: " + args[i] + " Parser: True");
             }
             catch(FileNotFoundException fnfe) {

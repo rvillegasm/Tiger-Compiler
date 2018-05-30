@@ -110,7 +110,7 @@ identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
 
   /* Start of a string */
 
-  \"           { string.setLength(0); yybegin(STRING); }
+  \"           { string.setLength(0); yybegin(STRING); } 
 }
 
 <STRING> {

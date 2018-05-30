@@ -1,10 +1,11 @@
+import java_cup.runtime.Symbol;
 
 terminal NIL, INTEGER, OF, NEW, POINT, COMMA, SUB, LPAREN, RPAREN, LCOR, RCOR, PRODUCE, IF, THEN, ELSE, 
          WHILE, DO, FOR, TO, BREAK, LET, IN, END, SEMICOLON, TYPE, EQUALS, CLASS, EXTENDS, FUNCTION,
          COLON, PRIMITIVE, VAR, METHOD, ARRAY, ADD, TIMES, DIV, DIFFERENT, LESSTHAN, MORETHAN, LESSEQUAL, MOREEQUAL,
          AND, OR, IMPORT, LKEY, RKEY, ID, STRING;
 
-non terminal program, expr, lvalue, exprs, decls, decl, vardec, classfields, classfield, ty, tyfields,
+non terminal Symbol program, expr, lvalue, exprs, decls, decl, vardec, classfields, classfield, ty, tyfields,
              op, idexpr, commaexpr, semiexpr, commatypeid, ifthenelse, typeid;
 
 precedence left OR;
@@ -18,7 +19,7 @@ start with program;
 
 program ::= expr
         |   decls
-	|   {: RESULT = null; :}  //FALTA POR CORREGIR
+	  |   {: RESULT = new java_cup.runtime.Symbol(TigerSymbols.EOF); :}
         ;
 	
 //no-terminal extendido
@@ -67,7 +68,8 @@ ifthenelse ::= ELSE expr
 
 lvalue ::= typeid
        |   lvalue POINT ID
-       |   lvalue LCOR expr RCOR
+       |   lvalue LCOR RCOR
+       |   lvalue LCOR exprs RCOR
        ;
 
 semiexpr ::= SEMICOLON expr
