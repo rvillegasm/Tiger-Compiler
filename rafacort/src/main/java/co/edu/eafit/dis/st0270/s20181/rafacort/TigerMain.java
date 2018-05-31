@@ -22,7 +22,7 @@ public class TigerMain {
   public static void main(String[] args) {
     
     Set<String> keyWords = new HashSet<>(Arrays.asList(
-                                                        "ARRAY", "IF", "THEN", "ELSE", "WHILE", "OR", "TO", "DO", "LET", "IN", 
+                                                        "ARRAY", "IF", "THEN", "ELSE", "WHILE", "TO", "DO", "LET", "IN", 
                                                         "END", "OF", "BREAK", "NIL", "FUNCTION", "VAR", "TYPE", "IMPORT",
                                                         "PRIMITIVE", "CLASS", "EXTENDS", "METHOD", "NEW", "FOR"
                                                       ));
