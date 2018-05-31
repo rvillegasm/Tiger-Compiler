@@ -63,13 +63,13 @@ public class TigerMain {
 
               parser.parse();
 
-              System.out.println("File: " + args[i] + " Parser: True");
+              System.out.println("File: " + args[i] + " Parser: True\n");
             }
             catch(FileNotFoundException fnfe) {
               usage();
             }
             catch(Exception e) {
-              System.out.println("File: " + args[i] + " Parser: False");
+              System.out.println("File: " + args[i] + " Parser: False\n");
               System.exit(1);
             }
     
@@ -146,13 +146,13 @@ public class TigerMain {
 
               parser.parse();
               
-              System.out.println("File: " + args[i] + " Parser: True");
+              System.out.println("File: " + args[i] + " Parser: True\n");
             }
             catch(FileNotFoundException fnfe) {
               usage();
             }
             catch(Exception e) {
-              System.out.println("File: " + args[i] + " Parser: False");
+              System.out.println("File: " + args[i] + " Parser: False\n");
               System.exit(1);
             }
     
@@ -172,13 +172,13 @@ public class TigerMain {
             TigerLexer scan = new TigerLexer(new FileReader(args[i]));
             TigerParser parser = new TigerParser(scan);
             parser.parse();
-            System.out.println("File: " + args[i] + " Parser: True");
+            System.out.println("File: " + args[i] + " Parser: True\n");
           }
           catch(FileNotFoundException fnfe) {
             usage();
           }
           catch(Exception e) {
-            System.out.println("File: " + args[i] + " Parser: False");
+            System.out.println("File: " + args[i] + " Parser: False\n");
             System.exit(1);
           }
   
@@ -197,13 +197,13 @@ public class TigerMain {
           TigerLexer scan = new TigerLexer(new FileReader(args[i]));
           TigerParser parser = new TigerParser(scan);
           parser.parse();
-          System.out.println("File: " + args[i] + " Parser: True");
+          System.out.println("File: " + args[i] + " Parser: True\n");
         }
         catch(FileNotFoundException fnfe) {
           usage();
         }
         catch(Exception e) {
-          System.out.println("File: " + args[i] + " Parser: False");
+          System.out.println("File: " + args[i] + " Parser: False\n");
 	        System.exit(1);
         }
 

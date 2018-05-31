@@ -116,9 +116,9 @@ classfields ::= classfield
             ;
 
 classfield ::= vardec
-	   |   METHOD ID LPAREN RPAREN EQUALS expr
+	     |   METHOD ID LPAREN RPAREN EQUALS expr
            |   METHOD ID LPAREN tyfields RPAREN EQUALS expr
-	   |   METHOD ID LPAREN RPAREN COLON ID EQUALS expr
+	     |   METHOD ID LPAREN RPAREN COLON ID EQUALS expr
            |   METHOD ID LPAREN tyfields RPAREN COLON ID EQUALS expr
            ;
 

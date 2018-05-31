@@ -4,6 +4,7 @@ import java_cup.runtime.Symbol;
 
 %%
 %cup
+%unicode
 %class TigerLexer
 %line
 %column
@@ -118,19 +119,19 @@ identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
 
   [^\n\r\"\\]+ { string.append( yytext() ); }
 
-  \\a          { string.append( (char) 7); }
-  \\b          { string.append('\b');  }
-  \\f          { string.append('\f');  }
-  \\n          { string.append('\n');  }
-  \\r          { string.append('\r');  }
-  \\t          { string.append('\t');  }
-  \\v          { string.append( (char) 11); }
-  \\\          { string.append('\\');  }
-  \\\"         { string.append('\"');  }
+  \\a          { string.append("\\a"); }
+  \\b          { string.append("\\b"); }
+  \\f          { string.append("\\f"); }
+  \\n          { string.append("\\n"); }
+  \\r          { string.append("\\r"); }
+  \\t          { string.append("\\t"); }
+  \\v          { string.append("\\v"); }
+  \\\          { string.append("\\");  }
+  \\\"         { string.append("\\\"");}
 
-  \\[0-7][0-7][0-7]          { string.append( (char) Integer.parseInt(yytext().substring(1), 8) ); }
+  \\[0-7][0-7][0-7]          { string.append( yytext() ); }
 
-  \\x[0-9a-fA-F][0-9a-fA-F]  { string.append( (char) Integer.parseInt(yytext().substring(2), 16) ); }
+  \\x[0-9a-fA-F][0-9a-fA-F]  { string.append( yytext() ); }
 
   \\.          { throw  new Error("Illegal escape sequence <"+ yytext() +"> at line: " + (yyline +1) + " column: " + yycolumn); }
   
