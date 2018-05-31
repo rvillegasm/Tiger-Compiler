@@ -48,6 +48,9 @@ expr ::= NIL
      |   ID LPAREN RPAREN
      |   ID LPAREN expr RPAREN
      |   ID LPAREN expr commaexpr RPAREN
+     |   ID POINT ID LPAREN RPAREN
+     |   ID POINT ID LPAREN expr RPAREN
+     |   ID POINT ID LPAREN expr commaexpr RPAREN
      |   lvalue POINT ID LPAREN RPAREN
      |   lvalue POINT ID LPAREN expr RPAREN
      |   lvalue POINT ID LPAREN expr commaexpr RPAREN
