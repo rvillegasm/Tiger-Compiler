@@ -13,6 +13,8 @@ import java.util.Stack;
 %{
 
   StringBuffer string = new StringBuffer();
+  /* Comment stack */
+  Stack<Character> commentPile = new Stack<Character>();
   /* gets the current Token line */
   public int getLine() {
     return yyline + 1;
@@ -30,11 +32,15 @@ import java.util.Stack;
 number = 0 | [1-9][0-9]*
 whitespace = [ \t]
 eol = \n\r|\r\n|\r|\n
-comment = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+//comment = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+commentStart = "/*"
+commentContent = [^"/*""*/"]
+commentEnd = "*/"
 identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
 
 
 %state STRING
+%state COMMENT
 
 %%
 
@@ -92,8 +98,9 @@ identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
   ":="        { return new Symbol(TigerSymbols.PRODUCE);  }
 
   /* comments */
+  {commentStart} { yybegin(COMMENT); commentPile.push('c'); }
 
-  {comment}    {/* ignore */}
+  //{comment}    {/* ignore */}
 
   /* whitespace */
 
@@ -113,6 +120,19 @@ identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
   /* Start of a string */
 
   \"           { string.setLength(0); yybegin(STRING); } 
+}
+
+<COMMENT> {
+  {commentStart}   { commentPile.push('c'); }
+  {commentContent} { }
+  {commentEnd}     { 
+                      if(commentPile.peek().equals('c')) {
+                        commentPile.pop();
+                      }
+                      if(commentPile.isEmpty()) {
+                        yybegin(YYINITIAL); 
+                      } 
+                    }
 }
 
 <STRING> {
@@ -138,7 +158,13 @@ identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
   
 }
 
-<<EOF>>        { return new Symbol(TigerSymbols.EOF)      ;}
+<<EOF>>        { 
+                  if(!commentPile.isEmpty()) { 
+                    throw new Error("Syntax Error: Comment not closed correctly"); 
+                  } 
+                  else { 
+                    return new Symbol(TigerSymbols.EOF);}     
+                }
 .              { throw  new Error("Illegal Character <"+ yytext() +"> at line: " + (yyline +1) + " column: " + yycolumn); }
 
 
