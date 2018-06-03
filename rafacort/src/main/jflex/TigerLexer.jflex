@@ -34,7 +34,7 @@ whitespace = [ \t]
 eol = \n\r|\r\n|\r|\n
 //comment = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 commentStart = "/*"
-commentContent = [^"/*""*/"]
+commentContent = [^"/*""*/"] | ["*"]* | ["/"]*
 commentEnd = "*/"
 identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
 
@@ -100,7 +100,7 @@ identifier = [:jletter:][:jletterdigit:]*["_"]* | "_main"
   /* comments */
   {commentStart} { yybegin(COMMENT); commentPile.push('c'); }
 
-  //{comment}    {/* ignore */}
+  //{comment}    {/* ignore */} THIS IS NOT USED ANYMORE
 
   /* whitespace */
 
