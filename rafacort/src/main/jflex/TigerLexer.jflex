@@ -1,6 +1,7 @@
 package co.edu.eafit.dis.st0270.s20181.rafacort;
 
 import java_cup.runtime.Symbol;
+import java.util.Stack;
 
 %%
 %cup

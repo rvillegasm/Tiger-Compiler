@@ -239,10 +239,10 @@ public class TigerMain {
 
   private static String printToken(TigerLexer scaner, String token) {
     if(token.equals("STRING")) {
-      return "\"" + scaner.string.toString() + "\"";
+      return "\"\"" + scaner.string.toString() + "\"\"";
     }
     else {
-      return  scaner.getText();
+      return "\"" + scaner.getText() + "\"";
     }
   }
 
