@@ -67,6 +67,7 @@ expr ::= NIL
      |   BREAK
      |   LET decls IN END
      |   LET decls IN exprs END
+     |   LET IN END
      ;
      
 // solucion else colgante
